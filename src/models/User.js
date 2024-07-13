@@ -29,7 +29,7 @@ const UserSchema = new Schema({
     },
     resetPasswordToken: {
         type: String,
-        required: falsfe,
+        required: false,
     },
     resetPasswordExpireIn: {
         type: String,
@@ -68,4 +68,4 @@ UserSchema.methods.getUserInfo = function () {
 };
 
 const User = model("users", UserSchema);
-module.exports = { UserSchema };
+module.exports = { User };

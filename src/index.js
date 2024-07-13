@@ -5,17 +5,19 @@ const userRouter = require('./apis/user.js');
 const connectToMongoDB = require('./connection.js');
 // const { json } = require('body-parser'); // No need to import body-parser as express has built-in JSON parsing
 
-const app = express();
+const appRouter = express();
 
-app.use(cors());
-app.use(express.json());
+appRouter.use(cors());
+appRouter.use(express.json());
 
-app.use('/users', userRouter);
+appRouter.use('/users', userRouter);
 
 connectToMongoDB(DB)
     .then(() => console.log('Successfully connected to MongoDB'))
     .catch((error) => console.error('Error connecting to MongoDB:', error));
 
-app.listen(PORT, () => {
+appRouter.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
+
+module.exports = { appRouter };

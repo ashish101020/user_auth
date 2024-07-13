@@ -7,17 +7,19 @@ const SENDGRID_API = process.env.APP_SENDGRID_API;
 const DOMAIN = process.env.APP_DOMAIN;
 const PORT = process.env.APP_PORT || process.env.PORT;
 const SECRET_KEY = process.env.APP_SECRET;
+const HOST_EMAIL = process.env.APP_HOST_EMAIL;
 
 
 // Check if critical environment variables are set
-if (!DB || !SENDGRID_API || !DOMAIN || !SECRET_KEY) {
-    console.error('One or more required environment variables are missing.');
-    console.error('DB:', DB);
-    console.error('SENDGRID_API:', SENDGRID_API);
-    console.error('DOMAIN:', DOMAIN);
-    console.error('PORT:', PORT);
-    console.error('SECRET_KEY:', SECRET_KEY);
-    process.exit(1); // Exit the process with an error code
-}
+// if (!DB || !SENDGRID_API || !DOMAIN || !SECRET_KEY) {
+//     console.error('One or more required environment variables are missing.');
+//     console.error('DB:', DB);
+//     console.error('SENDGRID_API:', SENDGRID_API);
+//     console.error('DOMAIN:', DOMAIN);
+//     console.error('PORT:', PORT);
+//     console.error('SECRET_KEY:', SECRET_KEY);
+//     console.error('HOST_EMAIL:', HOST_EMAIL);
+//     process.exit(1); // Exit the process with an error code
+// }
 
-module.exports = { DB, SENDGRID_API, DOMAIN, PORT, SECRET_KEY };
+module.exports = { DB, SENDGRID_API, DOMAIN, PORT, SECRET_KEY, HOST_EMAIL };

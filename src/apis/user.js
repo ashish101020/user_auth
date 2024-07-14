@@ -1,9 +1,11 @@
 const { Router } = require('express');
-const { User } = require('../models/User.js');
+const { User } = require('../models/User');
 const { randomBytes } = require('crypto');
+const path = require('path');
 const { RegisterValidations } = require('../validators/user-validator');
-const { validatorMiddleware } = require('./../middleware/validator-middleware.js');
-const sendMail = require('./../functions/email-sender.js');
+const { validatorMiddleware } = require('../middleware/validator-middleware');
+const sendMail = require('../functions/email-sender');
+const { DOMAIN } = require('../constants/index');
 
 const router = Router();
 
@@ -35,9 +37,9 @@ router.post('/api/register', RegisterValidations, validatorMiddleware, async (re
             <div>
                 <h1>Hello, ${user.username}</h1>
                 <p>Please click the following link to verify your account</p>
-                <a href="/user/verify-now/${user.verificationCode}">Verify Now</a>
+                <a href="${DOMAIN}/user/verify-now/${user.verificationCode}">Verify Now</a>
             </div>
-        `;
+            `;
         await sendMail(user.email, "Verify Account", "Please verify your account", html);
         
         return res.status(201).json({
@@ -50,6 +52,26 @@ router.post('/api/register', RegisterValidations, validatorMiddleware, async (re
             success: false,
             message: "An error occurred.",
         });
+    }
+});
+
+router.get('/verify-now/:verificationCode', async (req, res) => {
+    try {
+        let { verificationCode } = req.params;
+        let user = await User.findOne({ verificationCode });
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized access. Invalid verification code.",
+            });
+        }
+        user.verified = true;
+        user.verificationCode = undefined;
+        await user.save();
+        return res.sendFile(path.join(__dirname, "../templetes/verification-success.html"));
+    } catch (error) {
+        console.error("ERROR_VERIFYING_USER", error);
+        return res.sendFile(path.join(__dirname, "../templetes/error.html"));
     }
 });
 

@@ -10,7 +10,7 @@ const appRouter = express();
 appRouter.use(cors());
 appRouter.use(express.json());
 
-appRouter.use('/users', userRouter);
+appRouter.use('/user', userRouter);
 
 connectToMongoDB(DB)
     .then(() => console.log('Successfully connected to MongoDB'))

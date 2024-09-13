@@ -2,10 +2,11 @@ const { Router } = require('express');
 const { User } = require('../models/User');
 const { randomBytes } = require('crypto');
 const path = require('path');
-const { RegisterValidations } = require('../validators/user-validator');
+const { RegisterValidations, AuthenticateValidations } = require('../validators/user-validator');
 const { validatorMiddleware } = require('../middleware/validator-middleware');
 const sendMail = require('../functions/email-sender');
 const { DOMAIN } = require('../constants/index');
+const userAuth = require('../middleware/auth-guard.js');
 
 const router = Router();
 
@@ -73,6 +74,55 @@ router.get('/verify-now/:verificationCode', async (req, res) => {
         console.error("ERROR_VERIFYING_USER", error);
         return res.sendFile(path.join(__dirname, "../templetes/error.html"));
     }
+});
+
+router.post('/api/authenticate', AuthenticateValidations, validatorMiddleware, async (req, res) => {
+    try {
+        let { username, password } = req.body;
+        
+        // Ensure password is a string
+        password = String(password);
+        
+        console.log('Login attempt with:', { username, password });
+        
+        let user = await User.findOne({ username });
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "Username not found.",
+            });
+        }
+
+        if (!(await user.comparePassword(password))) {
+            return res.status(404).json({
+                success: false,
+                message: "Incorrect password.",
+            });
+        }
+
+        let token = await user.generateJWT();
+        return res.status(200).json({
+            user: user.getUserInfo(),
+            token: `Bearer ${token}`,
+            success: true,
+            message: "Hurray, you are now logged in.",
+        });
+    } catch (error) {
+        console.error('Error during authentication:', error);
+        return res.status(500).json({
+            success: false,
+            message: "An error occurred.",
+        });
+    }
+});
+
+
+
+router.get("/api/authenticate", userAuth, async (req, res) =>{
+    console.log("REQ", req);
+    return res.status(200).json({
+        user: req.user,
+    });
 });
 
 module.exports = router;

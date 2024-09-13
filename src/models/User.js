@@ -41,25 +41,35 @@ const UserSchema = new Schema({
     },
 }, {timestamps: true});
 
-UserSchema.pre('save', async function(next){
-    let user = this;
-    if(!user.isModified("password")) return next();
-    user.password = await hash(user.password, 10);
-    next();
+UserSchema.pre('save', async function(next) {
+    if (!this.isModified('password')) return next();
+    
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await hash(this.password, salt);
+        next();
+    } catch (err) {
+        next(err);
+    }
 });
 
+
 UserSchema.methods.comparePassword = async function (password) {
-    return await compare( password, this.password);
-}
+    const isMatch = await compare(password, this.password);
+    // console.log('Password comparison result:', isMatch);  // Add this log
+    return isMatch;
+};
 
 UserSchema.methods.generateJWT = async function() {
-    let payload = {
+    const payload = {
         username: this.username,
         email: this.email,
         name: this.name,
         id: this._id,
-    }
-    return await sign(payload, SECRET_KEY, { expiresIn: "1 day"});
+    };
+    
+    // console.log('Generating token with payload:', payload); 
+    return sign(payload, SECRET_KEY, { expiresIn: '1d' });
 };
 
 UserSchema.methods.generatePasswordReset = function () {
@@ -68,7 +78,7 @@ UserSchema.methods.generatePasswordReset = function () {
 };
 
 UserSchema.methods.getUserInfo = function () {
-    return pick(this, ["_id", "username", "email", "name"]);
+    return pick(this, ["_id", "username", "email", "name", "verified"]);
 };
 
 const User = model("users", UserSchema);

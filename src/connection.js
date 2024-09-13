@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { DB } = require("./constants/index.js")
 async function connectToMongoDB(DB) {
     try {
         await mongoose.connect(DB);

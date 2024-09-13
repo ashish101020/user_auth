@@ -1,14 +1,18 @@
 const cors = require('cors');
 const express = require('express');
-const { DB, SENDGRID_API, DOMAIN, PORT, SECRET_KEY } = require('./constants/index.js');
+const { DB, PORT } = require('./constants/index.js');
 const userRouter = require('./apis/user.js');
 const connectToMongoDB = require('./connection.js');
+const passport = require('passport');
 // const { json } = require('body-parser'); // No need to import body-parser as express has built-in JSON parsing
+require('./middleware/passport-middleware.js')
 
 const appRouter = express();
 
+
 appRouter.use(cors());
 appRouter.use(express.json());
+appRouter.use(passport.initialize());
 
 appRouter.use('/user', userRouter);
 

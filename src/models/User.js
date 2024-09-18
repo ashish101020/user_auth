@@ -1,4 +1,4 @@
-const { compare, hash } = require('bcryptjs');
+const { compare, hash } = require('bcrypt');
 const { Schema, model, mongo } = require('mongoose');
 const { SECRET_KEY } = require('../constants');
 const { sign } = require('jsonwebtoken');
@@ -45,13 +45,14 @@ UserSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     
     try {
-        const salt = await bcrypt.genSalt(10);
+        const salt = 10;  // bcrypt defaults to 10 rounds of salt if not specified
         this.password = await hash(this.password, salt);
         next();
     } catch (err) {
         next(err);
     }
 });
+
 
 
 UserSchema.methods.comparePassword = async function (password) {

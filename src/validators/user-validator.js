@@ -7,5 +7,6 @@ const password = check('password', 'Password is required of minimum length of 8.
 
 const RegisterValidations = [password, name, username, email];
 const AuthenticateValidations = [password, username];
+const ResetPasswordValidations = [email];
 
-module.exports = { RegisterValidations, AuthenticateValidations };
+module.exports = { RegisterValidations, AuthenticateValidations, ResetPasswordValidations };

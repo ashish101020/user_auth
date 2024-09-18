@@ -1,0 +1,9 @@
+{
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "editor.suggest.snippetsPreventQuickSuggestions": true,
+    "html.format.indentHandlebars": true,
+    "html.format.indentInnerHtml": true,
+    "html.format.templating": true,
+    "editor.linkedEditing": true,
+    "liveServer.settings.donotVerifyTags": true
+}

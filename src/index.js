@@ -5,12 +5,11 @@ const userRouter = require('./apis/user.js');
 const connectToMongoDB = require('./connection.js');
 const passport = require('passport');
 // const { json } = require('body-parser'); // No need to import body-parser as express has built-in JSON parsing
-require('./middleware/passport-middleware.js')
+require('./middleware/passport-middleware.js');
 
 const appRouter = express();
 
-
-appRouter.use(cors());
+appRouter.use(cors()); // This sets up CORS with default options
 appRouter.use(express.json());
 appRouter.use(passport.initialize());
 

@@ -53,8 +53,6 @@ UserSchema.pre('save', async function(next) {
     }
 });
 
-
-
 UserSchema.methods.comparePassword = async function (password) {
     const isMatch = await compare(password, this.password);
     // console.log('Password comparison result:', isMatch);  // Add this log

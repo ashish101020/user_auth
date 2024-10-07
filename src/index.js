@@ -1,10 +1,11 @@
 const cors = require('cors');
+const path = require('path');
 const express = require('express');
 const { DB, PORT } = require('./constants/index.js');
 const userRouter = require('./apis/user.js');
 const connectToMongoDB = require('./connection.js');
 const passport = require('passport');
-// const { json } = require('body-parser'); // No need to import body-parser as express has built-in JSON parsing
+const profile = require('./apis/profiles.js');
 require('./middleware/passport-middleware.js');
 
 const appRouter = express();
@@ -12,8 +13,10 @@ const appRouter = express();
 appRouter.use(cors()); // This sets up CORS with default options
 appRouter.use(express.json());
 appRouter.use(passport.initialize());
+appRouter.use(express.static(path.join(__dirname, '/uploads')));
 
 appRouter.use('/user', userRouter);
+appRouter.use('/profiles', profile);
 
 connectToMongoDB(DB)
     .then(() => console.log('Successfully connected to MongoDB'))

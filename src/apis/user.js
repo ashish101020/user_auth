@@ -192,7 +192,7 @@ router.post('/api/reset-password-now', async(req, res) =>{
         const html = `
             <div>
                 <h1>Hello, ${user.username}</h1>
-                <p>Please click the following link to reset your Password</p>
+                <p>Your Password resetted</p>
                 <p>If this password reset request is not done by your then you can contact us.</p>
             </div>
             `;

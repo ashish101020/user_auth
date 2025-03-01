@@ -94,8 +94,15 @@ router.post('/api/authenticate', AuthenticateValidations, validatorMiddleware, a
             });
         }
 
+        if (!user.verified) {
+            return res.status(403).json({
+                success: false,
+                message: "Your account is not verified. Please check your email for the verification link.",
+            });
+        }
+
         if (!(await user.comparePassword(password))) {
-            return res.status(404).json({
+            return res.status(401).json({
                 success: false,
                 message: "Incorrect password.",
             });

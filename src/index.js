@@ -10,8 +10,9 @@ require('./middleware/passport-middleware.js');
 
 const appRouter = express();
 
-appRouter.use(cors()); // This sets up CORS with default options
+appRouter.use(cors());
 appRouter.use(express.json());
+appRouter.use(express.urlencoded({ extended: true }));
 appRouter.use(passport.initialize());
 appRouter.use(express.static(path.join(__dirname, '/uploads')));
 

@@ -84,7 +84,6 @@ router.post('/api/authenticate', AuthenticateValidations, validatorMiddleware, a
         // Ensure password is a string
         password = String(password);
         
-        console.log('Login attempt with:', { username, password });
         
         let user = await User.findOne({ username });
         if (!user) {
@@ -93,6 +92,7 @@ router.post('/api/authenticate', AuthenticateValidations, validatorMiddleware, a
                 message: "Username not found.",
             });
         }
+        console.log('Login attempt with:', { username, password });
 
         if (!user.verified) {
             return res.status(403).json({

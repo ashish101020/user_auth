@@ -45,7 +45,7 @@ UserSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     
     try {
-        const salt = 10;  // bcrypt defaults to 10 rounds of salt if not specified
+        const salt = 10;
         this.password = await hash(this.password, salt);
         next();
     } catch (err) {
@@ -55,7 +55,6 @@ UserSchema.pre('save', async function(next) {
 
 UserSchema.methods.comparePassword = async function (password) {
     const isMatch = await compare(password, this.password);
-    // console.log('Password comparison result:', isMatch);  // Add this log
     return isMatch;
 };
 

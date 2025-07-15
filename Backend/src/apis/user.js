@@ -8,6 +8,7 @@ const { validatorMiddleware } = require('../middleware/validator-middleware');
 const sendMail = require('../functions/email-sender');
 const { DOMAIN } = require('../constants/index');
 const userAuth = require('../middleware/auth-guard.js');
+const rateLimit = require("express-rate-limit");
 
 const router = Router();
 
@@ -131,7 +132,13 @@ router.get("/api/authenticate", userAuth, async (req, res) =>{
     });
 });
 
-router.put('/api/reset-password', ResetPasswordValidations, validatorMiddleware, async(req, res)=>{
+const resetPasswordLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: "Too many reset requests, try again later.",
+});
+
+router.put('/api/reset-password', resetPasswordLimiter, ResetPasswordValidations, validatorMiddleware, async(req, res)=>{
     try{
         let { email } = req.body;
         let user = await User.findOne({email});
@@ -148,11 +155,11 @@ router.put('/api/reset-password', ResetPasswordValidations, validatorMiddleware,
                 <h1>Hello, ${user.username}</h1>
                 <p>Please click the following link to reset your Password</p>
                 <p>If this password reset request is not created by your then you can ignore this email</p>
-                <a href="${DOMAIN}/user/reset-password/${user.resetPasswordToken}">Verify Now</a>
+                <a href="${DOMAIN}/user/reset-password/${user.resetPasswordToken}">Reset Password</a>
             </div>
             `;
         await sendMail(user.email, "Reset Password", "Please reset your password.", html);
-        return res.status(500).json({
+        return res.status(200).json({
             success: true,
             message: "Password reset link sent to your email",
         });

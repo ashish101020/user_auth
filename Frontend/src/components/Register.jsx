@@ -114,7 +114,7 @@ const Register = () => {
           <br />
           <button type="submit">Sugn Up</button>
         </form>
-        <p>Have account <Link to="/login">LogIn</Link></p>
+        <p>Have account <Link to="/">LogIn</Link></p>
       </div>
     </div>
   );

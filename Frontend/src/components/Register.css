@@ -3,7 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #3d1157;
+    background-color: #7b5b8d;
     width: 100vw;
     height: 100vh;
 
@@ -16,7 +16,7 @@
     border-radius: 15px;
     display: flex;
     flex-direction: column;
-    background-color: cornflowerblue;
+    background-color: rgb(90, 48, 117);
     font-size: larger;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }

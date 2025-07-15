@@ -29,7 +29,7 @@ const Navbar = () => {
     if (email) {
       try {
         const response = await axios.put(
-          "http://localhost:5000/api/reset-password",
+          "http://localhost:5000/user/api/reset-password",
           { email }
         );
         Swal.fire("Sent!", response.data.message, "success");
@@ -60,7 +60,7 @@ const Navbar = () => {
   return (
     <div className="navbar">
       <div className="funnc-nav">
-        <h1>TMCC</h1>
+        <h1>Awa</h1>
       </div>
       <div className="user-logo" ref={dropdownRef}>
         <button onClick={toggleMenu}>User</button>

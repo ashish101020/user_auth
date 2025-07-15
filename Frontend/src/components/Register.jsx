@@ -18,11 +18,7 @@ const Register = () => {
       ...prev,
       [name]: value,
     }));
-  };
-  // const handleLogin = (e) => {
-  //   e.preventDefault();
-  //   navigate("/login");
-  // };
+  }; 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,49 +72,49 @@ const Register = () => {
       <div className="box">
         <form onSubmit={handleSubmit}>
           <div className="input-item">
-            <label>Name:</label>
             <input
               type="text"
               value={formData.name}
               name="name"
               onChange={(e) => handleChange(e)}
               required
+              placeholder="Name"
             />
           </div>
           <div className="input-item">
-            <label>Username:</label>
             <input
               type="text"
               value={formData.username}
               name="username"
               onChange={(e) => handleChange(e)}
               required
+              placeholder="Username"
             />
           </div>
           <div className="input-item">
-            <label>Email:</label>
             <input
               type="text"
               value={formData.email}
               name="email"
               onChange={(e) => handleChange(e)}
               required
+              placeholder="Email"
             />
           </div>
           <div className="input-item">
-            <label>Password:</label>
             <input
               type="password"
               name="password"
               value={formData.password}
               onChange={(e) => handleChange(e)}
               required
+              placeholder="Password"
             />
           </div>
           <br />
-          <button type="submit">Submit</button>
+          <button type="submit">Sugn Up</button>
         </form>
-        <Link to="/login">LogIn</Link>
+        <p>Have account <Link to="/login">LogIn</Link></p>
       </div>
     </div>
   );

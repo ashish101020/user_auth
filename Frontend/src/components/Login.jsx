@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import './Login.css';
+import { AuthContext } from "../context/AuthContext";
 
 const Login = () => {
-  const navigate = useNavigate();
+
+  const { login, loading } = useContext(AuthContext);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -30,22 +31,8 @@ const Login = () => {
       return;
     }
 
-    try {
-      const response = await axios.post("http://localhost:5000/user/api/authenticate", {
-        username: formData.username,
-        password: formData.password,
-      });
-
-      if (response.status === 403) {
-        alert("Account not verified");
-      } else if (response.status === 200) {
-        localStorage.setItem("token", response.data.token);
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Login failed. Please check your credentials.");
-    }
+    login(formData);
+    
   };
 
   return (
@@ -58,6 +45,7 @@ const Login = () => {
               name="username"
               value={formData.username}
               onChange={handleChange}
+              required
               placeholder="Username"
             />
           </div>
@@ -67,12 +55,13 @@ const Login = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
+              required
               placeholder="Password"
             />
           </div>
-          <button type="submit">LogIn</button>
+          <button type="submit">{loading ? "Logging..." : "LogIn"}</button>
         </form>
-        <Link to="/register">Register</Link>
+        <p>Don't have account  <Link to="/register">Register</Link></p>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import "./Navbar.css";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
+import {api} from '../api/config'
 
 const Navbar = () => {
   const { logout } = useContext(AuthContext);
@@ -29,7 +30,7 @@ const Navbar = () => {
     if (email) {
       try {
         const response = await axios.put(
-          "http://localhost:5000/user/api/reset-password",
+          `${api}/user/api/reset-password`,
           { email }
         );
         Swal.fire("Sent!", response.data.message, "success");

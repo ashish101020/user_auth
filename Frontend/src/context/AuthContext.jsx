@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {api} from '../api/config'
 
 export const AuthContext = createContext();
 
@@ -16,7 +17,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const res = await axios.get(
-            "http://localhost:5000/user/api/authenticate",
+            `${api}/user/api/authenticate`,
             {
               headers: {
                 Authorization: `${token}`,
@@ -39,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://localhost:5000/user/api/authenticate",
+        `${api}/user/api/authenticate`,
         {
           username: formData.username,
           password: formData.password,
